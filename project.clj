@@ -3,7 +3,12 @@
   :url "https://github.com/ALRW/clojure-kafka-example-app"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
-  :dependencies [[org.clojure/clojure "1.8.0"]]
+  :dependencies [[org.clojure/clojure "1.8.0"]
+                 [com.stuartsierra/component "0.3.2"]
+                 [org.apache.kafka/kafka-streams "2.0.0"]
+                 [org.apache.kafka/kafka-clients "2.0.0"]
+                 [org.apache.kafka/kafka-streams-test-utils "2.0.0"]]
+  :plugins [[lein-cljfmt "0.6.0"]]
   :main ^:skip-aot kafka-example.core
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all}})
