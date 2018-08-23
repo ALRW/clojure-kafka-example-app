@@ -1,7 +1,8 @@
 (ns kafka-example.system
   (:require [com.stuartsierra.component :as component])
   (:import org.apache.kafka.common.serialization.Serdes
-           [org.apache.kafka.streams StreamsConfig]))
+           [org.apache.kafka.streams.kstream ValueMapper]
+           [org.apache.kafka.streams StreamsConfig KafkaStreams StreamsBuilder]))
 
 (def props
   (let [properties (java.util.Properties.)]
@@ -10,3 +11,4 @@
     (.put properties StreamsConfig/DEFAULT_KEY_SERDE_CLASS_CONFIG  (.getName (.getClass (Serdes/String))))
     (.put properties StreamsConfig/DEFAULT_VALUE_SERDE_CLASS_CONFIG  (.getName (.getClass (Serdes/String))))
     properties))
+
