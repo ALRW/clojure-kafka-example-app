@@ -7,6 +7,7 @@ Feature List
 ------------
 
 - [x] Add dependencies
+- [x] Create basic Kafka Skeleton
 - [ ] Create Consumer Kafka Component
 - [ ] Create Producer Kafka Component
 - [ ] Create test harness using Spec
