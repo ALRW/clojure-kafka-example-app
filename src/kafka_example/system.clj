@@ -25,7 +25,7 @@
 (defrecord KafkaTransformer [stream-props input-topic output-topic]
   component/Lifecycle
   (start [component]
-    (println "INFO: Starting KafkaTransformer")
+    (println "INFO: Starting KafkaTransformer for " input-topic " and " output-topic)
     (let [stream (KafkaStreams. (topology input-topic output-topic) stream-props)]
       (assoc component :stream stream)))
   (stop [component]
@@ -37,4 +37,4 @@
 (defn base-system [config]
   (let [{:keys [input-topic output-topic]} config]
     (component/system-map
-      :stream (->KafkaTransformer props input-topic output-topic))))
+      :transformer (->KafkaTransformer props input-topic output-topic))))

@@ -9,5 +9,5 @@
 (defn -main
   [& args]
   (let [system (component/start (base-system {:input-topic (first args) :output-topic (second args)}))
-        stream (:stream system)]
+        stream (-> system :transformer :stream)]
     (.start stream)))
