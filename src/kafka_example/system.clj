@@ -12,3 +12,20 @@
     (.put properties StreamsConfig/DEFAULT_VALUE_SERDE_CLASS_CONFIG  (.getName (.getClass (Serdes/String))))
     properties))
 
+(defn topology [input-topic output-topic]
+  (let [builder (StreamsBuilder.)]
+    (-> (.stream builder input-topic)
+        (.mapValues (reify ValueMapper
+                      (apply [_ v]
+                        (println "INFO " v)
+                        (str "---> " v))))
+        (.to output-topic))
+    (.build builder)))
+
+(defrecord KafkaTransformer [stream-props input-topic output-topic]
+  component/Lifecycle
+  (start [component]
+    (println "INFO: Starting KafkaTransformer")
+
+    (let [stream (KafkaStreams. (topology input-topic output-topic) stream-props)]
+      (assoc component :stream (.start stream)))))
