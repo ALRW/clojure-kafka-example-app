@@ -8,8 +8,8 @@ Feature List
 
 - [x] Add dependencies
 - [x] Create basic Kafka Skeleton
-- [ ] Create Consumer Kafka Component
-- [ ] Create Producer Kafka Component
+- [x] Wrap the KafkaTransformer in `Component`
+- [ ] Test KafkaTransformer using `TologyTestDriver`
 - [ ] Create test harness using Spec
 - [ ] Update Consumer and Producer to use Avro-Schemas
 - [ ] Anything else worthwhile
