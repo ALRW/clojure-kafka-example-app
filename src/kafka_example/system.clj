@@ -26,6 +26,15 @@
   component/Lifecycle
   (start [component]
     (println "INFO: Starting KafkaTransformer")
-
     (let [stream (KafkaStreams. (topology input-topic output-topic) stream-props)]
-      (assoc component :stream (.start stream)))))
+      (assoc component :stream stream)))
+  (stop [component]
+    (println "INFO: Stopping KafkaTransformer")
+    (when-let [stream (:stream component)]
+      (.close stream))
+    (assoc component :stream nil)))
+
+(defn base-system [config]
+  (let [{:keys [input-topic output-topic]} config]
+    (component/system-map
+      :stream (->KafkaTransformer props input-topic output-topic))))

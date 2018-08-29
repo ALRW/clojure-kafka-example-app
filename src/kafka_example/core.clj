@@ -1,23 +1,13 @@
 (ns kafka-example.core
-  (:require [kafka-example.system :refer [props]])
+  (:require [kafka-example.system :refer [base-system]]
+            [com.stuartsierra.component :as component])
   (:import org.apache.kafka.common.serialization.Serdes
            [org.apache.kafka.streams.kstream ValueMapper]
            [org.apache.kafka.streams StreamsConfig KafkaStreams StreamsBuilder])
   (:gen-class))
 
-(defn topology [input-topic output-topic]
-  (let [builder (StreamsBuilder.)]
-    (-> (.stream builder input-topic)
-        (.mapValues (reify ValueMapper
-                      (apply [_ v] 
-                        (println "INFO " v)
-                        (str "---> " v))))
-        (.to output-topic))
-    (.build builder)))
-
 (defn -main
   [& args]
-
-  (def stream (KafkaStreams. (topology (first args) (second args)) props))
-
-  (.start stream))
+  (let [system (component/start (base-system {:input-topic (first args) :output-topic (second args)}))
+        stream (:stream system)]
+    (.start stream)))
