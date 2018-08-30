@@ -9,6 +9,7 @@ Feature List
 - [x] Add dependencies
 - [x] Create basic Kafka Skeleton
 - [x] Wrap the KafkaTransformer in `Component`
+- [x] Add correct logging rather than `(println)`
 - [ ] Test KafkaTransformer using `TologyTestDriver`
 - [ ] Create test harness using Spec
 - [ ] Update Consumer and Producer to use Avro-Schemas

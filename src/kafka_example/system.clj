@@ -1,5 +1,6 @@
 (ns kafka-example.system
-  (:require [com.stuartsierra.component :as component])
+  (:require [com.stuartsierra.component :as component]
+            [clojure.tools.logging :as log])
   (:import org.apache.kafka.common.serialization.Serdes
            [org.apache.kafka.streams.kstream ValueMapper]
            [org.apache.kafka.streams StreamsConfig KafkaStreams StreamsBuilder]))
@@ -17,7 +18,7 @@
     (-> (.stream builder input-topic)
         (.mapValues (reify ValueMapper
                       (apply [_ v]
-                        (println "INFO " v)
+                        (log/info v)
                         (str "---> " v))))
         (.to output-topic))
     (.build builder)))
@@ -25,11 +26,11 @@
 (defrecord KafkaTransformer [stream-props input-topic output-topic]
   component/Lifecycle
   (start [component]
-    (println "INFO: Starting KafkaTransformer for " input-topic " and " output-topic)
+    (log/info "Starting KafkaTransformer for" input-topic "and" output-topic)
     (let [stream (KafkaStreams. (topology input-topic output-topic) stream-props)]
       (assoc component :stream stream)))
   (stop [component]
-    (println "INFO: Stopping KafkaTransformer")
+    (log/info "Stopping KafkaTransformer")
     (when-let [stream (:stream component)]
       (.close stream))
     (assoc component :stream nil)))
