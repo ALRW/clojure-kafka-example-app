@@ -5,10 +5,10 @@
            [org.apache.kafka.streams.kstream ValueMapper]
            [org.apache.kafka.streams StreamsConfig KafkaStreams StreamsBuilder]))
 
-(def props
+(defn props [app-id bootstrap-server]
   (let [properties (java.util.Properties.)]
-    (.put properties StreamsConfig/APPLICATION_ID_CONFIG "kafka-example")
-    (.put properties StreamsConfig/BOOTSTRAP_SERVERS_CONFIG "localhost:9092")
+    (.put properties StreamsConfig/APPLICATION_ID_CONFIG app-id)
+    (.put properties StreamsConfig/BOOTSTRAP_SERVERS_CONFIG bootstrap-server)
     (.put properties StreamsConfig/DEFAULT_KEY_SERDE_CLASS_CONFIG  (.getName (.getClass (Serdes/String))))
     (.put properties StreamsConfig/DEFAULT_VALUE_SERDE_CLASS_CONFIG  (.getName (.getClass (Serdes/String))))
     properties))
@@ -36,6 +36,7 @@
     (assoc component :stream nil)))
 
 (defn base-system [config]
-  (let [{:keys [input-topic output-topic]} config]
+  (let [{:keys [input-topic output-topic]} config
+        p (props "kafka-example" "localhost:9092")]
     (component/system-map
-      :transformer (->KafkaTransformer props input-topic output-topic))))
+      :transformer (->KafkaTransformer p input-topic output-topic))))
