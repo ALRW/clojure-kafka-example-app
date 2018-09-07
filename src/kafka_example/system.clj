@@ -3,14 +3,18 @@
             [clojure.tools.logging :as log])
   (:import org.apache.kafka.common.serialization.Serdes
            [org.apache.kafka.streams.kstream ValueMapper]
-           [org.apache.kafka.streams StreamsConfig KafkaStreams StreamsBuilder]))
+           [org.apache.kafka.streams StreamsConfig
+            KafkaStreams
+            StreamsBuilder]))
 
 (defn props [app-id bootstrap-server]
   (let [properties (java.util.Properties.)]
     (.put properties StreamsConfig/APPLICATION_ID_CONFIG app-id)
     (.put properties StreamsConfig/BOOTSTRAP_SERVERS_CONFIG bootstrap-server)
-    (.put properties StreamsConfig/DEFAULT_KEY_SERDE_CLASS_CONFIG  (.getName (.getClass (Serdes/String))))
-    (.put properties StreamsConfig/DEFAULT_VALUE_SERDE_CLASS_CONFIG  (.getName (.getClass (Serdes/String))))
+    (.put properties StreamsConfig/DEFAULT_KEY_SERDE_CLASS_CONFIG
+          (.getName (.getClass (Serdes/String))))
+    (.put properties StreamsConfig/DEFAULT_VALUE_SERDE_CLASS_CONFIG
+          (.getName (.getClass (Serdes/String))))
     properties))
 
 (defn topology [input-topic output-topic]
@@ -27,7 +31,9 @@
   component/Lifecycle
   (start [component]
     (log/info "Starting KafkaTransformer for" input-topic "and" output-topic)
-    (let [stream (KafkaStreams. (topology input-topic output-topic) stream-props)]
+    (let [stream (KafkaStreams.
+                   (topology input-topic output-topic)
+                   stream-props)]
       (assoc component :stream stream)))
   (stop [component]
     (log/info "Stopping KafkaTransformer")

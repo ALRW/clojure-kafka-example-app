@@ -18,4 +18,9 @@
           input "This is the test string"
           output "---> This is the test string"]
       (.pipeInput test-driver (.create factory topic-in "key" input))
-      (is (= output (.value (.readOutput test-driver topic-out deserializer deserializer)))))))
+      (is
+        (= output (.value (.readOutput
+                            test-driver
+                            topic-out
+                            deserializer
+                            deserializer)))))))
