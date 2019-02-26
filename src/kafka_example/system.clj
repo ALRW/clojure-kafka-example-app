@@ -41,8 +41,9 @@
       (.close stream))
     (assoc component :stream nil)))
 
-(defn base-system [config]
-  (let [{:keys [input-topic output-topic]} config
-        p (props "kafka-example" "localhost:9092")]
+(defn base-system [{:keys [input-topic output-topic]}]
     (component/system-map
-      :transformer (->KafkaTransformer p input-topic output-topic))))
+      :transformer (->KafkaTransformer
+                     (props "kafka-example" "localhost:9092")
+                     input-topic
+                     output-topic)))

@@ -7,9 +7,8 @@
 (defn -main
   [& args]
   (log/info "Kafka-example App starting")
-  (let [system (component/start
-                 (base-system
-                   {:input-topic (first args)
-                    :output-topic (second args)}))
-        stream (-> system :transformer :stream)]
-    (.start stream)))
+  (-> (base-system {:input-topic (first args) :output-topic (second args)})
+      component/start
+      :transformer
+      :stream
+      .start))
